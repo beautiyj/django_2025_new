@@ -8,7 +8,7 @@ class Post(models.Model) :
 	created_at = models.DateTimeField(auto_now_add=True, null=True)	   # created_at 필드는 DateTimeField(날짜+시간저장 필드클래스),2025-07-30 14:32:00 등의형식으로저장됨
 								   # 해당 필드에는 작성된 시간 등 저장 가능,
 								   # auto_now_add=True 같은 옵션을 주면 자동으로 생성 시간 저장도 가능.
-	updated_at = models.DateTimeField(auto_now_add=True, null=True)  # 해당줄추가
+	updated_at = models.DateTimeField(auto_now=True, null=True)  # 해당줄추가
 	#author : 추후 작성 예정
 	def __str__(self):
 		return f' [ {self.pk} ]{self.title}'  # 두줄추가하기.
