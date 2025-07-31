@@ -12,3 +12,6 @@ class Post(models.Model) :
 	#author : 추후 작성 예정
 	def __str__(self):
 		return f' [ {self.pk} ]{self.title}'  # 두줄추가하기.
+
+	def get_absolute_url(self) :
+		return f'/blog/{self.pk}'

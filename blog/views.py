@@ -12,3 +12,13 @@ def index(request):
         	'posts': posts,  # { 'posts': posts, } 추가하기
         }
 )
+
+def detail(request, pk):
+    post = Post.objects.get(pk=pk)
+    return render(
+        request,
+        'blog/detail.html',
+        {
+            'post': post,
+        }
+    )
