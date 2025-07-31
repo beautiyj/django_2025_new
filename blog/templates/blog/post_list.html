@@ -11,7 +11,7 @@
         Blog - 전체글 리스트입니다.
         for post in posts
             print(post)
-        {% for post in posts %}
+        {% for post in post_list %}
             <h1>{{ post }} </h1>
 
             <h3><a href="{{ post.get_absolute_url }}" 제목 : {{ post.title }} </h3>
