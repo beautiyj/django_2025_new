@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Post
 from .forms import PostForm     #한줄추가. 뷰에서 폼을 임포트하기
 
+
 # Create your views here.
 def index(request):
     posts = Post.objects.all().order_by('-pk')

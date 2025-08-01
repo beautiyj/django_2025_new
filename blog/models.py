@@ -2,6 +2,17 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
+class Category(models.Model):
+	name = models.CharField(max_length=100)
+	slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
+
+	def get_url(self):
+		return f'/blog/category/{self.slug}/'
+
+	def __str__(self):
+		return f'{self.name}----{self.slug}'
+
 class Post(models.Model) :
 	title = models.CharField(max_length=30)    # title 필드는 CharField (문자열필드정의 클래스), 문자필드, 최대 길이(필수설정) 30으로 설정
 	content = models.TextField()			   # content 필드는 TextField (텍스트저장 문자열필드클래스), 문자열의 길이 제한 없도록(본문내용이니까)
@@ -15,7 +26,7 @@ class Post(models.Model) :
 	updated_at = models.DateTimeField(auto_now=True, null=True)  # 해당줄추가
 
 	author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
+	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)  # 카테고리 연결 추가
 
 	def __str__(self):
 		return f' [ {self.pk} ]{self.title}'  # 두줄추가하기.
