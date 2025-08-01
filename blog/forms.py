@@ -6,8 +6,8 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title',
-                  'author',
+                  #'author',  #아직이둘은미지정
                   'content',
-                  'category',
+                  #'category',
                   'uploaded_image',
                   'uploaded_file' ]

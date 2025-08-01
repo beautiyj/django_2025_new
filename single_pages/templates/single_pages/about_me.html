@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}       #추가
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -10,9 +11,11 @@
     <a href="/about_me/">About me</a>
 </nav>
 
-<h1>안녕하세요 여기도 소개</h1>
-<h2>이력</h2>
-<h3>아직안씀 185페이지참고하면됨</h3>
+<   h1>안녕하세요 여기도 소개</h1>
+    <h2>이력</h2>
+    <h3>아직안씀 185페이지참고하면됨</h3>
+    <img src="{% static 'single_pages/indigo.jpg' %}" alt="indigo">
+
 
 </body>
 </html>

@@ -1,4 +1,5 @@
 # Post 모델은 models 모듈의 Model 클래스를 확장해서 만든 파이썬 클래스.
+from django.contrib.auth.models import User
 from django.db import models
 
 class Post(models.Model) :
@@ -12,7 +13,10 @@ class Post(models.Model) :
 								   # 해당 필드에는 작성된 시간 등 저장 가능,
 								   # auto_now_add=True 같은 옵션을 주면 자동으로 생성 시간 저장도 가능.
 	updated_at = models.DateTimeField(auto_now=True, null=True)  # 해당줄추가
-	#author : 추후 작성 예정
+
+	author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+
 	def __str__(self):
 		return f' [ {self.pk} ]{self.title}'  # 두줄추가하기.
 
