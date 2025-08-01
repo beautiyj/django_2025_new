@@ -5,7 +5,7 @@ class Post(models.Model) :
 	title = models.CharField(max_length=30)    # title 필드는 CharField (문자열필드정의 클래스), 문자필드, 최대 길이(필수설정) 30으로 설정
 	content = models.TextField()			   # content 필드는 TextField (텍스트저장 문자열필드클래스), 문자열의 길이 제한 없도록(본문내용이니까)
 
-	head_image = models.ImageField(upload_to="images/%Y/%m/%d", null=True, blank=True)
+	uploaded_image = models.ImageField(upload_to="images/%Y/%m/%d", null=True, blank=True)
 
 	created_at = models.DateTimeField(auto_now_add=True, null=True)	   # created_at 필드는 DateTimeField(날짜+시간저장 필드클래스),2025-07-30 14:32:00 등의형식으로저장됨
 								   # 해당 필드에는 작성된 시간 등 저장 가능,

@@ -5,3 +5,4 @@
  #Pycharm
 .idea/
 migrations/  #이거 한 줄 추가하면 끝!
+_media/
