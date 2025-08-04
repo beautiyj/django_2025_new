@@ -63,6 +63,9 @@
                     <div class="card-header">Categories</div>
                     <div class="card-body">
                         <ul class="list-unstyled mb-0">
+                              <!-- views.xxx()  context로 넘겨 받아야 함.
+                            categories - category list를 받음
+                            -->
                             {% for category in categories %}
                                 <li><a href={{ category.get_url }}>{{ category.name }}</a></li>
                             {% endfor %}

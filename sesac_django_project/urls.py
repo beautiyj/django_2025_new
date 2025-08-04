@@ -21,12 +21,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 import blog
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("blog/", include('blog.urls')),
     path('', include('single_pages.urls')),
+    #path('/blog/<int:pk>/createcomment/', include('createcomment.urls'), name='blogcreatecomment'),
+    #path('/blog/<int:pk>/updatecomment/', include('updatecomment.urls'), name='blogupdatecomment'),
+    #path('/blog/<int:pk>/deletecomment/', include('deletecomment.urls'), name='blogdeletecomment'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

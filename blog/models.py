@@ -13,6 +13,7 @@ class Category(models.Model):
 	def __str__(self):
 		return f'{self.name}----{self.slug}'
 
+
 class Post(models.Model) :
 	title = models.CharField(max_length=30)    # title 필드는 CharField (문자열필드정의 클래스), 문자필드, 최대 길이(필수설정) 30으로 설정
 	content = models.TextField()			   # content 필드는 TextField (텍스트저장 문자열필드클래스), 문자열의 길이 제한 없도록(본문내용이니까)
@@ -29,7 +30,20 @@ class Post(models.Model) :
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)  # 카테고리 연결 추가
 
 	def __str__(self):
-		return f' [ {self.pk} ]{self.title}'  # 두줄추가하기.
+		return f'게시글제목: {self.title} -by {self.author} -category : {self.category} -  게시글내용 - {self.content} - 생성시간 - {self.created_at} - 업데이트-{self.updated_at}'
 
 	def get_absolute_url(self) :
 		return f'/blog/{self.pk}/'
+
+class Comment(models.Model):
+	post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	author = models.ForeignKey(User, on_delete=models.CASCADE)
+	content = models.TextField()
+	created_at = models.DateTimeField(auto_now_add=True, null=True)
+	updated_at = models.DateTimeField(auto_now=True, null=True)
+
+	def __str__(self):
+		return (f'{self.author.username}-{self.content} '
+				f'in {self.post.title}'
+			   )
+

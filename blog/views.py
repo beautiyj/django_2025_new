@@ -1,31 +1,57 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import Post
-from .forms import PostForm     #한줄추가. 뷰에서 폼을 임포트하기
-
+from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView #추가
+from .models import Post, Category, Comment
+from .forms import PostForm, CommentForm
+from django.contrib.auth.models import User
 
 # Create your views here.
+#함수 생성
 def index(request):
-    posts = Post.objects.all().order_by('-pk')
-
-    return render(
-        request,
-        'blog/index.html',
-        {
-            'posts': posts,
-        }
-    )
+    #db에서 query - select * from post
+    posts1111 = Post.objects.all().order_by('-pk')
+    categories = Category.objects.all()
+    return render(request,
+                  'blog/index.html',
+                  context={'posts' : posts1111,
+                           'categories' :categories
+                           }
+                 )
+#/blog/category/<str:slug>/
+#/blog/category/no_category
+def category(request, slug):
+    categories = Category.objects.all()
+    if slug=='no_category':
+        #미분류인경우
+        posts= Post.objects.filter(category=None)
+    else: # 내상세페이지?
+        category = Category.objects.get(slug=slug)
+        posts= Post.objects.filter(category=category)
+    return render(request,
+                  template_name='blog/index.html',
+                  context={'posts': posts,
+                           'categories': categories
+                           }
+                  )
 
 def detail(request, pk):
     post = Post.objects.get(pk=pk)
-    return render(
-        request,
-        'blog/detail.html',
-        {
-            'post': post,
-        }
-    )
-
+    categories = Category.objects.all()
+    comments = Comment.objects.filter(post=post)
+    commentform = CommentForm()
+    return render(request,
+                  'blog/detail.html',
+                  context={'post':post,
+                           'categories':categories,
+                           'comments': comments,
+                           'commentform': commentform,
+                           })
+'''
+#댓글 전체 리스트 보기
+def comment_list(request):
+    comments = Comment.objects.all().order_by('-pk')
+    return render(request, 'blog/detail.html', {'comments': comments})
+'''
 
 #/blog/create/ 370p참고 이런 폼포스트인지포스트폼인지그냥폼인지만들기
 @login_required  # 여기에 데코레이터 추가
@@ -46,6 +72,67 @@ def create(request):
     return render(request,
                   template_name='blog/postform.html',
                   context={'postform': postform})
+
+#/blog/<int:pk>/delete 이런경우글을삭제하겠다
+def delete(request, pk):
+    post = Post.objects.get(pk=pk)
+    post.delete()
+    return redirect('index')    #여기서인덱스는 블로그네임지정=인덱스로 해둔 그거(블로그/유알엘.파이에서 확인가능)
+    #return render('/blog/')  이거랑동일함
+
+#/blog/<int:pk>/update  -> pk는 post.pk
+def update(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        postform = PostForm(request.POST, request.FILES, instance=post)
+        if postform.is_valid():
+            postform.save()
+            return redirect('/blog/')
+    else:
+        postform = PostForm(instance=post)
+    return render(request,
+                  template_name='blog/postupdateform.html',
+                  context={'postform': postform}
+                  )
+#댓글작성
+def createcomment(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        commentform = CommentForm(request.POST)
+        if commentform.is_valid():
+            comment=commentform.save(commit=False)
+            comment.author = User.objects.get(username='admin')
+            comment.post = post
+            comment.save()
+            return redirect(f'/blog/{post.pk}/')
+
+
+    return redirect(f'/blog/{post.pk}/')
+
+
+#댓글수정
+def updatecomment(request, pk):
+    comment = Comment.objects.get(pk=pk)
+    if request.method=='POST':
+        commentform= CommentForm(request.POST, instance=comment)
+        if commentform.is_valid():
+            commentform.save()
+            return redirect(f'/blog/{comment.post.pk}/')
+    else:
+        commentform = CommentForm(instance=comment)
+
+    return render(request,
+                  template_name = 'blog/commentupdateform.html',
+                  context = {'commentform': commentform}
+                  )
+
+#댓글삭제
+def deletecomment(request, pk):
+    comment= Comment.objects.get(pk=pk)
+
+    comment.delete()
+    return redirect(f'/blog/{comment.post.pk}/')
+
 
 '''
 if request.method == 'POST':
