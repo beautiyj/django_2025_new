@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     "blog" ,
 	"single_pages" ,
     "django_extensions",
+    "library",          #세팅.파이에 새롭게 생성한 앱을 등록한다. 그다음 데이터베이스에 포스트 모델 반영 가능.
+    "shopping_mall",
+    "mytripblog"
 ]
 
 MIDDLEWARE = [
